@@ -1,7 +1,6 @@
 package com.company.scraper;
 
-import com.company.scraper.comments.StoreCommentScraper;
-import com.company.scraper.search.App;
+import com.company.scraper.search.SearchAppInfo;
 import com.company.scraper.search.StoreSearchScraper;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class StoreScraper {
         this.searchScraper = searchScraper;
     }
 
-    public List<App> search (String query) throws IOException, URISyntaxException {
+    public List<SearchAppInfo> search (String query) throws IOException, URISyntaxException {
         return searchScraper.search(query);
     }
 

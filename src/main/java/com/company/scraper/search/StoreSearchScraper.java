@@ -1,6 +1,5 @@
 package com.company.scraper.search;
 
-import com.company.scraper.search.App;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,16 +11,16 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public abstract class StoreSearchScraper {
-    private final String searchUrl;
+    private final String searchBaseUrl;
     private final CloseableHttpClient httpClient;
 
-    public StoreSearchScraper(String searchUrl) {
-        this.searchUrl = searchUrl;
+    public StoreSearchScraper(String searchBaseUrl) {
+        this.searchBaseUrl = searchBaseUrl;
         httpClient = HttpClients.createDefault();
     }
 
-    public final List<App> search(String query) throws URISyntaxException, IOException {
-        var builder = new URIBuilder(buildSearchUrl(searchUrl, query));
+    public final List<SearchAppInfo> search(String query) throws URISyntaxException, IOException {
+        var builder = new URIBuilder(buildSearchUrl(searchBaseUrl, query));
         setQueryParameters(builder, query);
 
         var response = httpClient.execute(new HttpGet(builder.build()));
@@ -35,5 +34,5 @@ public abstract class StoreSearchScraper {
 
 
     public abstract void setQueryParameters(URIBuilder builder, String query);
-    public abstract List<App> parseSearchRequest(String responseHTML);
+    public abstract List<SearchAppInfo> parseSearchRequest(String responseHTML);
 }

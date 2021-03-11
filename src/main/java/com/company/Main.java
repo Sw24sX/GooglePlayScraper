@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.googleplay.GooglePlaySearchScraper;
 import com.company.scraper.StoreScraper;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -19,6 +20,7 @@ public class Main {
         var searchScraper = new GooglePlaySearchScraper("https://play.google.com/store/search");
         var scraper = new StoreScraper(searchScraper);
         var apps = scraper.search("discord");
+        var app = apps.get(1);
     }
 
     public static String GetResponse(String query) throws URISyntaxException, IOException {

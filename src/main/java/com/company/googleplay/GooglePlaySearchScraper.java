@@ -1,6 +1,6 @@
-package com.company;
+package com.company.googleplay;
 
-import com.company.scraper.search.App;
+import com.company.scraper.search.SearchAppInfo;
 import com.company.scraper.search.StoreSearchScraper;
 import org.apache.http.client.utils.URIBuilder;
 import org.jsoup.Jsoup;
@@ -22,8 +22,8 @@ public class GooglePlaySearchScraper extends StoreSearchScraper {
     }
 
     @Override
-    public List<App> parseSearchRequest(String responseHTML) {
-        var result = new ArrayList<App>();
+    public List<SearchAppInfo> parseSearchRequest(String responseHTML) {
+        var result = new ArrayList<SearchAppInfo>();
         var doc = Jsoup.parse(responseHTML);
         for (Element el : doc.body().getElementsByClass("Vpfmgd")){
             result.add(parseApp(el));
@@ -32,8 +32,8 @@ public class GooglePlaySearchScraper extends StoreSearchScraper {
         return result;
     }
 
-    private App parseApp(Element element) {
-        var app = new App(getImageSrc(element), getName(element));
+    private SearchAppInfo parseApp(Element element) {
+        var app = new SearchAppInfo(getImageSrc(element), getName(element), getId(element)); //todo
         app.otherParameters.put("developer", getDeveloper(element));
         app.otherParameters.put("score", getScore(element).toString());
         return app;
@@ -45,6 +45,12 @@ public class GooglePlaySearchScraper extends StoreSearchScraper {
 
     private String getName (Element element) {
         return element.getElementsByClass("nnK0zc").first().text();
+    }
+
+    private String getId (Element element) {
+        //todo
+        var url = element.getElementsByClass("JC71ub").first().attr("href");
+        return url.substring(23);
     }
 
     private String getDeveloper (Element element) {
