@@ -45,14 +45,4 @@ public class GooglePlayDetailInfoScraper extends StoreDetailedScraper {
         }
         return images;
     }
-
-    @Override
-    public void setQueryCommentsParameters(URIBuilder builder, FullAppInfo searchAppInfo) {
-
-    }
-
-    @Override
-    public List<Comment> parseDetailCommentsRequest(String responseHTML) {
-        return null;
-    }
 }

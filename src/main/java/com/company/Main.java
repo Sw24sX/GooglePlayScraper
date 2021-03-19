@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -75,40 +76,85 @@ public class Main {
         var entity = response.getEntity();
         var result = EntityUtils.toString(entity);
         var cleared = clearRequest(result);
-        var reviews = cleared.get(0);
+        var reviews = (JSONArray)cleared.get(0);
         var token = ((JSONArray)cleared.get(cleared.length() - 1)).getString(cleared.length() - 1);
+        var a = ParseReview(reviews);
     }
 
+    // 0 reviewId
+    // 1 :
+    //      0 = Name
+    //      1:
+    //          0 -
+    //          1 -
+    //          2 -
+    //          3:
+    //              0 -
+    //              1 -
+    //              2 = userImageSrc
+    // 2: Score
+    // 3 -
+    // 4 = review
+    // 5:
+    //      0: at  (date.timestamp)
+    //      1:
+    // 6 = likes
+    // 7:
+    //      0 = Name developer
+    //      1 = Answer developer
+    //      2 :
+    //          0 = date
+    //          1 -
+    // 8 -
+    // 9 -
+    // 10 review created version
+    // 11 -
+    // 12 -
+
     public static List<Comment> ParseReview(JSONArray array) {
-        // 0 reviewId
-        // 1 :
-        //      0 = Name
-        //      1:
-        //          0 -
-        //          1 -
-        //          2 -
-        //          3:
-        //              0 -
-        //              1 -
-        //              2 = userImageSrc
-        // 2: Score
-        // 3 -
-        // 4 = review
-        // 5:
-        //      0: at  (date.timestamp)
-        //      1:
-        // 6 = likes
-        // 7:
-        //      0 = Name developer
-        //      1 = Answer developer
-        //      2 - (date answer)
-        // 8 -
-        // 9 -
-        // 10 review created version
-        // 11 -
-        // 12 -
-        return null;
+
+        var result = new ArrayList<Comment>();
+        for (var el :array) {
+            var t = el.hashCode();
+            var review = (JSONArray)el;
+            var reviewId = review.getString(0);
+            var user = (JSONArray)review.get(1);
+            var name = user.getString(0);
+            var userImageSrc = ((JSONArray)((JSONArray)user.get(1)).get(3)).getString(2);
+            var score = review.getInt(2);
+            var reviewText = review.getString(4);
+            var date = new Date(((JSONArray)review.get(5)).getInt(0));  // todo need fix, incorrect date
+            var likes = review.getInt(6);
+            var reviewCreatedVersion = review.getString(10);
+
+
+
+            var comment = new Comment(
+                    reviewId,
+                    name,
+                    userImageSrc,
+                    reviewText,
+                    score,
+                    date,
+                    likes,
+                    reviewCreatedVersion
+            );
+
+            var developerObj = review.get(7);
+            if(developerObj.hashCode() != 0){
+                var developer = (JSONArray)developerObj;
+                var developerName = developer.getString(0);
+                var answerText = developer.getString(1);
+                var answerDate = new Date(((JSONArray)developer.get(2)).getInt(0));
+                comment.addAnswer(answerText, developerName, answerDate);
+            }
+
+            result.add(comment);
+        }
+
+        return result;
     }
+
 
     public static JSONArray clearRequest(String request) {
         final String regex = "\\)]}'\\n\\n([\\s\\S]+)";
