@@ -19,4 +19,12 @@ public class FullAppInfo extends App {
         this.images = new ArrayList<>();
         this.description = description;
     }
+
+    public FullAppInfo(App app) {
+        super(app.id, app.name, app.imageSrc);
+        this.developer = null;
+        this.score = null;
+        this.images = new ArrayList<>();
+        this.description = null;
+    }
 }

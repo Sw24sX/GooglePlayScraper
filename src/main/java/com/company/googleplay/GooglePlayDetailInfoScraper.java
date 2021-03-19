@@ -1,7 +1,6 @@
 package com.company.googleplay;
 
 import com.company.scraper.App;
-import com.company.scraper.detailed.Comment;
 import com.company.scraper.detailed.FullAppInfo;
 import com.company.scraper.detailed.StoreDetailedScraper;
 import org.apache.http.client.utils.URIBuilder;

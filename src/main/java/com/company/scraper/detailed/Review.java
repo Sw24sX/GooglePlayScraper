@@ -2,7 +2,7 @@ package com.company.scraper.detailed;
 
 import java.util.Date;
 
-public class Comment {
+public class Review {
     public final String reviewId;
     public final String userName;
     public final String userImageSrc;
@@ -15,9 +15,9 @@ public class Comment {
     public final Integer likes;
     public final String reviewCreatedVersion;
 
-    public Comment(String reviewId, String userName, String userImageSrc, String review,
-                   Integer score, Date dateReview, Integer likes, String reviewCreatedVersion,
-                   String answer, String developerName, Date answerDate) {
+    public Review(String reviewId, String userName, String userImageSrc, String review,
+                  Integer score, Date dateReview, Integer likes, String reviewCreatedVersion,
+                  String answer, String developerName, Date answerDate) {
         this.reviewId = reviewId;
         this.userName = userName;
         this.userImageSrc = userImageSrc;
@@ -31,8 +31,8 @@ public class Comment {
         this.answerDate = answerDate;
     }
 
-    public Comment(String reviewId, String userName, String userImageSrc, String review,
-                   Integer score, Date dateReview, Integer likes, String reviewCreatedVersion) {
+    public Review(String reviewId, String userName, String userImageSrc, String review,
+                  Integer score, Date dateReview, Integer likes, String reviewCreatedVersion) {
         this.reviewId = reviewId;
         this.userName = userName;
         this.userImageSrc = userImageSrc;
