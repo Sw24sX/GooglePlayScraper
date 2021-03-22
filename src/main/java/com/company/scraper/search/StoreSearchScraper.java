@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public abstract class StoreSearchScraper {
-    private final String searchBaseUrl;
+    protected final String searchBaseUrl;
     private final CloseableHttpClient httpClient;
 
     public StoreSearchScraper(String searchBaseUrl) {
@@ -20,7 +20,7 @@ public abstract class StoreSearchScraper {
     }
 
     public final List<SearchAppInfo> search(String query) throws URISyntaxException, IOException {
-        var builder = new URIBuilder(buildSearchUrl(searchBaseUrl, query));
+        var builder = new URIBuilder(buildSearchUrl(query));
         setQueryParameters(builder, query);
 
         var response = httpClient.execute(new HttpGet(builder.build()));
@@ -28,8 +28,8 @@ public abstract class StoreSearchScraper {
         return parseSearchRequest(EntityUtils.toString(entity));
     }
 
-    public  String buildSearchUrl(String defaultSearchUrl, String query) {
-        return defaultSearchUrl;
+    public  String buildSearchUrl(String query) {
+        return searchBaseUrl;
     }
 
 

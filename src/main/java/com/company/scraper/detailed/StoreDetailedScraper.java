@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class StoreDetailedScraper {
 
-    private final String appDetailBaseUrl;
+    protected final String appDetailBaseUrl;
     private final CloseableHttpClient httpClient;
 
     public StoreDetailedScraper(String appDetailBaseUrl) {

@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.appstore.AppStoreSearchScraper;
 import com.company.googleplay.GooglePlayDetailInfoScraper;
 import com.company.googleplay.GooglePlayReviewsScraper;
 import com.company.googleplay.GooglePlaySearchScraper;
@@ -35,8 +36,8 @@ enum Sort {MostRelevant, Newest, Rating}
 public class Main {
     // using Apache HttpClient
     public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
-        var apps = new GooglePlaySearchScraper().search("find");
-        var detailApp = new GooglePlayDetailInfoScraper().getDetailedInfo(apps.get(0));
+        var apps = new AppStoreSearchScraper().search("discord");
+
     }
 
 
