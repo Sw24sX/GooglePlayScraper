@@ -23,7 +23,7 @@ public class GooglePlayReviewsScraper{
     private String country;
     private List<Review> reviews;
 
-    public GooglePlayReviewsScraper(String appDetailBaseUrl) {
+    public GooglePlayReviewsScraper() {
         reviews = new ArrayList<>();
         language = "ru";
         country = "ru";
@@ -49,7 +49,6 @@ public class GooglePlayReviewsScraper{
             if(cleared.length() < 2)
                 break;
             var token = ((JSONArray)cleared.get(cleared.length() - 1)).getString(cleared.length() - 1);
-
             request = BuildUrlRequestReviews.build(appId, token);
             response = httpClient.execute(request);
             entity = response.getEntity();
@@ -82,7 +81,8 @@ public class GooglePlayReviewsScraper{
             var likes = review.getInt(6);
             String reviewCreatedVersion = null;
             if(review.length() > 11) {
-                reviewCreatedVersion = review.getString(10);
+                if(review.get(10).hashCode() != 0)
+                    reviewCreatedVersion = review.getString(10);
             }
 
             var comment = new Review(
@@ -141,7 +141,7 @@ class BuildUrlRequestReviews {
 
     public static HttpPost build(String appId, String token) throws UnsupportedEncodingException {
         var sort = 1;
-        var count = 20;
+        var count = 199;
 
         var request = new HttpPost(path);
         request.addHeader("content-type", "application/x-www-form-urlencoded");

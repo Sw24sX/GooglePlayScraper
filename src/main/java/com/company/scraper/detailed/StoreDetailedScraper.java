@@ -10,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 
 public abstract class StoreDetailedScraper {
@@ -22,7 +23,7 @@ public abstract class StoreDetailedScraper {
         httpClient = HttpClients.createDefault();
     }
 
-    public final FullAppInfo getDetailedInfo(App app) throws URISyntaxException, IOException {
+    public final FullAppInfo getDetailedInfo(App app) throws URISyntaxException, IOException, ParseException {
         var builder = new URIBuilder(buildDetailedInfoUrl(app));
         setQueryDetailedInfoParameters(builder, app);
 
@@ -36,5 +37,5 @@ public abstract class StoreDetailedScraper {
     }
 
     public abstract void setQueryDetailedInfoParameters(URIBuilder builder, App app);
-    public abstract FullAppInfo parseDetailInfoRequest(String responseHTML, App app);
+    public abstract FullAppInfo parseDetailInfoRequest(String responseHTML, App app) throws ParseException;
 }

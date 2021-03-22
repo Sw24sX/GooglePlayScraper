@@ -15,6 +15,10 @@ public class GooglePlaySearchScraper extends StoreSearchScraper {
         super(searchUrl);
     }
 
+    public GooglePlaySearchScraper() {
+        super("https://play.google.com/store/search");
+    }
+
     @Override
     public void setQueryParameters(URIBuilder builder, String query) {
         builder.setParameter("q", query)

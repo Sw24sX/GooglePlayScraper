@@ -1,10 +1,13 @@
 package com.company;
 
 import com.company.googleplay.GooglePlayDetailInfoScraper;
+import com.company.googleplay.GooglePlayReviewsScraper;
 import com.company.googleplay.GooglePlaySearchScraper;
+import com.company.scraper.App;
 import com.company.scraper.StoreScraper;
 import com.company.scraper.detailed.Review;
 import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,8 +34,9 @@ enum Sort {MostRelevant, Newest, Rating}
 
 public class Main {
     // using Apache HttpClient
-    public static void main(String[] args) throws IOException, URISyntaxException {
-
+    public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
+        var apps = new GooglePlaySearchScraper().search("find");
+        var detailApp = new GooglePlayDetailInfoScraper().getDetailedInfo(apps.get(0));
     }
 
 

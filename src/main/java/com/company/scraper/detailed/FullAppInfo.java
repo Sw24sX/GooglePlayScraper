@@ -9,14 +9,14 @@ public class FullAppInfo extends App {
 
     public final String developer;
     public final Double score;
-    public final ArrayList<String> images;
+    public final List<String> images;
     public final String description;
 
-    public FullAppInfo(App app, String developer, Double score, String description) {
+    public FullAppInfo(App app, String developer, Double score, String description, List<String> images) {
         super(app.id, app.name, app.imageSrc);
         this.developer = developer;
         this.score = score;
-        this.images = new ArrayList<>();
+        this.images = images;
         this.description = description;
     }
 
