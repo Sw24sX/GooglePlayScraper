@@ -48,7 +48,6 @@ public class GooglePlayDetailInfoScraper extends StoreDetailedScraper {
                 src = element.attr("data-src");
             images.add(src);
         }
-        //todo need fix
         return images;
     }
 

@@ -33,9 +33,9 @@ public class AppStoreSearchScraper extends StoreSearchScraper {
     @Override
     public List<SearchAppInfo> parseSearchRequest(String responseHTML) {
         var doc = Jsoup.parse(responseHTML);
-        var appElements = doc.getElementsByClass("as-explore-curated").first();
+        var appElements = doc.getElementsByClass("as-explore-curated");
         var result = new ArrayList<SearchAppInfo>();
-        for(var element : appElements.children()) {
+        for(var element : appElements.first().children()) {
             var imageSrc = getImage(element);
             var name = getName(element);
             var description = getDescription(element);

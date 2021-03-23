@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.appstore.AppStoreDetailedInfoScraper;
 import com.company.appstore.AppStoreSearchScraper;
 import com.company.googleplay.GooglePlayDetailInfoScraper;
 import com.company.googleplay.GooglePlayReviewsScraper;
@@ -21,6 +22,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -36,8 +38,8 @@ enum Sort {MostRelevant, Newest, Rating}
 public class Main {
     // using Apache HttpClient
     public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
-        var apps = new AppStoreSearchScraper().search("discord");
-
+        var apps = new AppStoreSearchScraper().search("tvich").get(0);
+        var fullApp = new AppStoreDetailedInfoScraper().getDetailedInfo(apps);
     }
 
 
