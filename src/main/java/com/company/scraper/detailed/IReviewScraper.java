@@ -7,5 +7,5 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public interface IReviewScraper {
-    List<Review> getComments(App app) throws IOException, URISyntaxException;
+    List<Review> getComments(App app) throws IOException, URISyntaxException, InterruptedException;
 }

@@ -34,7 +34,7 @@ public class AppStoreReviewScraper implements IReviewScraper {
     }
 
     @Override
-    public List<Review> getComments(App app) throws IOException, URISyntaxException {
+    public List<Review> getComments(App app) throws IOException, URISyntaxException, InterruptedException {
         final var httpClient = HttpClients.createDefault();
         final var builder = new BuildUrl(app.id, language);
         var result = new ArrayList<Review>();
@@ -42,12 +42,17 @@ public class AppStoreReviewScraper implements IReviewScraper {
             var get = builder.next();
             var response = EntityUtils.toString(httpClient.execute(get).getEntity());
             var responseJson = new JSONObject(response);
+            if(!responseJson.has("data")){
+                Thread.sleep(1000);
+                System.out.println("Все хреново, мы привысили лимит запросов"); //Todo delete this))
+                throw new IOException();
+            }
             var reviews = (JSONArray)responseJson.get("data");
             for (var i = 0; i < reviews.length(); i++) {
                 var review = reviews.getJSONObject(i);
                 result.add(parseReview(review));
             }
-
+            Thread.sleep(100);
             if (!responseJson.has("next"))
                 break;
         }
@@ -88,10 +93,10 @@ class BuildUrl {
     private Integer offset;
 
     public BuildUrl(String id, String language) throws IOException {
-        baseUrl = String.format("https://amp-api.apps.apple.com/v1/catalog/%s/apps/%s/reviews", language, id);
+        baseUrl = String.format("https://amp-api.apps.apple.com/v1/catalog/%s/apps/%s/reviews", language, id.substring(2));
         parameters = new Parameters();
         headers = new Headers(token(id, language));
-        offset = 10;
+        offset = 100;
     }
 
     public HttpGet next() throws URISyntaxException {
@@ -106,7 +111,7 @@ class BuildUrl {
 
     private static String token(String id, String lang) throws IOException {
         var httpClient = HttpClients.createDefault();
-        var url = String.format("https://apps.apple.com/%s/app/id%s", lang, id);
+        var url = String.format("https://apps.apple.com/%s/app/%s", lang, id);
         var entity = httpClient.execute(new HttpGet(url)).getEntity();
         var entityText = EntityUtils.toString(entity);
 

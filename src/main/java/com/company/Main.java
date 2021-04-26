@@ -1,7 +1,10 @@
 package com.company;
 
+import com.company.appstore.AppStoreReviewScraper;
+import com.company.appstore.AppStoreSearchScraper;
 import com.company.googleplay.GooglePlayDetailInfoScraper;
 import com.company.googleplay.GooglePlaySearchScraper;
+import com.company.scraper.App;
 import com.company.scraper.StoreScraper;
 import com.company.scraper.detailed.Review;
 import org.apache.http.Header;
@@ -39,28 +42,10 @@ enum Sort {MostRelevant, Newest, Rating}
 
 public class Main {
     // using Apache HttpClient
-    public static void main(String[] args) throws IOException, URISyntaxException, ParseException {
+    public static void main(String[] args) throws IOException, URISyntaxException, ParseException, InterruptedException {
+        var apps = new AppStoreSearchScraper().search("twitch");
 
-
-
-
-        // data (array)
-        // next (str)
-
-
-        // attributes (Obj)
-        //      date (str)
-        //      developerResponse (obj) (необязательно)
-        //          modified (str)
-        //          id (int)
-        //          body (str)
-        //      review (str)
-        //      rating (int)
-        //      isEdited (bool)
-        //      userName (str)
-        //      title (str)
-        // id (str)
-        // type (str)
+        var reviews = new AppStoreReviewScraper().getComments(apps.get(1));
     }
 
 

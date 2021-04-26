@@ -1,6 +1,7 @@
 package com.company.googleplay;
 
 import com.company.scraper.App;
+import com.company.scraper.detailed.IReviewScraper;
 import com.company.scraper.detailed.Review;
 import com.company.scraper.detailed.ReviewsScraper;
 import org.apache.http.client.HttpClient;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GooglePlayReviewsScraper{
+public class GooglePlayReviewsScraper implements IReviewScraper {
     private String language;
     private String country;
     private List<Review> reviews;
