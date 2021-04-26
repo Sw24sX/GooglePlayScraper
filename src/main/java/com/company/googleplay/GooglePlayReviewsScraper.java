@@ -91,7 +91,7 @@ public class GooglePlayReviewsScraper{
                     userImageSrc,
                     reviewText,
                     score,
-                    date,
+                    null, //todo need parse date
                     likes,
                     reviewCreatedVersion
             );
@@ -99,10 +99,9 @@ public class GooglePlayReviewsScraper{
             var developerObj = review.get(7);
             if(developerObj.hashCode() != 0){
                 var developer = (JSONArray)developerObj;
-                var developerName = developer.getString(0);
                 var answerText = developer.getString(1);
                 var answerDate = new Date(((JSONArray)developer.get(2)).getInt(0));
-                comment.addAnswer(answerText, developerName, answerDate);
+                comment.addAnswer(answerText, null); //todo need parse date
             }
 
             reviews.add(comment);

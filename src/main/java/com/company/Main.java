@@ -3,6 +3,7 @@ package com.company;
 import com.company.googleplay.GooglePlayDetailInfoScraper;
 import com.company.googleplay.GooglePlaySearchScraper;
 import com.company.scraper.StoreScraper;
+import com.company.scraper.detailed.Review;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -19,9 +20,14 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Pattern;
 
 enum Sort {MostRelevant, Newest, Rating}
@@ -116,7 +122,7 @@ public class Main {
 
         final var httpClient = HttpClients.createDefault();
         final var builder = new BuildUrl("1440976872", "ru");
-        var result = new ArrayList<JSONObject>();
+        var result = new ArrayList<Review>();
         while(true) {
             var get = builder.next();
             var response = EntityUtils.toString(httpClient.execute(get).getEntity());
@@ -124,7 +130,7 @@ public class Main {
             var reviews = (JSONArray)responseJson.get("data");
             for (var i = 0; i < reviews.length(); i++) {
                 var review = reviews.getJSONObject(i);
-                result.add(review);
+                result.add(parseReview(review));
             }
 
             if (!responseJson.has("next"))
@@ -149,6 +155,31 @@ public class Main {
         //      title (str)
         // id (str)
         // type (str)
+    }
+
+    private static Review parseReview(JSONObject reviewAttr) {
+        var attr = reviewAttr.getJSONObject("attributes");
+        var dateString = attr.getString("date").substring(0, 19);
+        var date = LocalDateTime.parse(dateString);
+        var review = attr.getString("review");
+        var rating = attr.getInt("rating");
+        var isEdited = attr.getBoolean("isEdited");
+        var userName = attr.getString("userName");
+        var reviewId = reviewAttr.getString("id");
+        var type = reviewAttr.getString("type");
+
+        var result = new Review(reviewId, userName, null, review, rating, date, 0, null);
+
+        if(attr.has("developerResponse")){
+            var developerResponse = attr.getJSONObject("developerResponse");
+            var modifiedDateString = developerResponse.getString("modified").substring(0, 19);
+            var modifiedDate = LocalDateTime.parse(modifiedDateString);
+            var developerResponseId = developerResponse.getInt("id");
+            var textDeveloperResponse = developerResponse.getString("body");
+            result.addAnswer(textDeveloperResponse, modifiedDate);
+        }
+
+        return result;
     }
 
     public static void Test() throws IOException, URISyntaxException {
