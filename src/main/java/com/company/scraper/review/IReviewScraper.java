@@ -1,4 +1,4 @@
-package com.company.scraper.detailed;
+package com.company.scraper.review;
 
 import com.company.scraper.App;
 

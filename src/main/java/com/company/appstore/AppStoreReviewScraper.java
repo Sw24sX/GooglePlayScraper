@@ -1,8 +1,8 @@
 package com.company.appstore;
 
 import com.company.scraper.App;
-import com.company.scraper.detailed.IReviewScraper;
-import com.company.scraper.detailed.Review;
+import com.company.scraper.review.IReviewScraper;
+import com.company.scraper.review.Review;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -43,7 +43,7 @@ public class AppStoreReviewScraper implements IReviewScraper {
             var response = EntityUtils.toString(httpClient.execute(get).getEntity());
             var responseJson = new JSONObject(response);
             if(!responseJson.has("data")){
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 System.out.println("Все хреново, мы привысили лимит запросов"); //Todo delete this))
                 throw new IOException();
             }
@@ -52,7 +52,7 @@ public class AppStoreReviewScraper implements IReviewScraper {
                 var review = reviews.getJSONObject(i);
                 result.add(parseReview(review));
             }
-            Thread.sleep(100);
+            //Thread.sleep(100);
             if (!responseJson.has("next"))
                 break;
         }
@@ -92,11 +92,20 @@ class BuildUrl {
     private final Headers headers;
     private Integer offset;
 
+    public BuildUrl(String id, String language, Integer startOffset) throws IOException {
+        baseUrl = String.format("https://amp-api.apps.apple.com/v1/catalog/%s/apps/%s/reviews", language, id.substring(2));
+        parameters = new Parameters();
+        offset = startOffset;
+        parameters.changeOffset(offset);
+        headers = new Headers(token(id, language));
+    }
+
     public BuildUrl(String id, String language) throws IOException {
         baseUrl = String.format("https://amp-api.apps.apple.com/v1/catalog/%s/apps/%s/reviews", language, id.substring(2));
         parameters = new Parameters();
+        offset = 10;
+        parameters.changeOffset(offset);
         headers = new Headers(token(id, language));
-        offset = 100;
     }
 
     public HttpGet next() throws URISyntaxException {

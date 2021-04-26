@@ -1,12 +1,10 @@
 package com.company.googleplay;
 
 import com.company.scraper.App;
-import com.company.scraper.detailed.IReviewScraper;
-import com.company.scraper.detailed.Review;
-import com.company.scraper.detailed.ReviewsScraper;
+import com.company.scraper.review.IReviewScraper;
+import com.company.scraper.review.Review;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;

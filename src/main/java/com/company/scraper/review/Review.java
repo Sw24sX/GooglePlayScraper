@@ -1,4 +1,4 @@
-package com.company.scraper.detailed;
+package com.company.scraper.review;
 
 import java.time.LocalDateTime;
 import java.util.Date;

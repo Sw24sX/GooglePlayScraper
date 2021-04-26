@@ -1,9 +1,7 @@
-package com.company.scraper.detailed;
+package com.company.scraper.review;
 
 import com.company.scraper.App;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
